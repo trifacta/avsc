@@ -3274,6 +3274,13 @@ suite('types', function () {
       assert.equal(type.fields[0].type.name, 'a.Person');
     });
 
+    test('non-standard namespace', function () {
+      var type = Type.forSchema({
+        type: 'fixed', name: '_ID', size: 3, namespace: '1a'
+      });
+      assert.equal(type.getName(), '1a._ID');
+    })
+
     test('namespaced global', function () {
       var type = Type.forSchema({
         type: 'record',
@@ -3345,10 +3352,6 @@ suite('types', function () {
       // Name.
       assert.throws(function () {
         Type.forSchema({type: 'fixed', name: 'ID$', size: 3});
-      });
-      // Namespace.
-      assert.throws(function () {
-        Type.forSchema({type: 'fixed', name: 'ID', size: 3, namespace: '1a'});
       });
       // Qualified.
       assert.throws(function () {
@@ -3770,7 +3773,6 @@ suite('types', function () {
     });
 
   });
-
 });
 
 function testType(Type, data, invalidSchemas) {
